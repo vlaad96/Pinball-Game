@@ -51,6 +51,7 @@ public:
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
+	bool DeleteBody(b2Body* circle);
 
 private:
 
