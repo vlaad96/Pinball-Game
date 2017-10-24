@@ -13,6 +13,10 @@ ModulePlayer::~ModulePlayer()
 bool ModulePlayer::Start()
 {
 	LOG("Loading player");
+
+	number_balls = 5;
+	score = 0;
+
 	return true;
 }
 

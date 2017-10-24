@@ -2,10 +2,12 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleSceneIntro.h"
+#include "ModulePlayer.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
+
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -25,10 +27,28 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
-	circle = App->textures->Load("pinball/wheel.png"); 
-	
+	//Textures of the game
 
-	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
+	background = App->textures->Load("/Sprites/Background.png");
+	tunnel1 = App->textures->Load("/Sprites/T1.png");
+	tunnel2 = App->textures->Load("/Sprites/T2.png");
+	spritesheet = App->textures->Load("/Sprites/sprites.png");
+
+
+	//Audio
+
+	//Sensors on tunnels
+
+	//Playability sensors
+
+	//variable initializing
+
+	//Cannon animation
+
+	//Raptor animation
+
+	//Floppers animation
+
 
 	return ret;
 }

@@ -40,6 +40,7 @@ public:
 	PhysBody* right_paddle_body;
 
 	// Sensors 
+
 	PhysBody* tunnel_beginning;
 	PhysBody* tunnel_finish;
 	PhysBody* right_tunnel2;
@@ -56,13 +57,14 @@ public:
 	PhysBody* deadline;
 
 	// Textures
-	SDL_Texture* circle;
+
 	SDL_Texture* background;
-	SDL_Texture* tunnels;
-	SDL_Texture* tunnels_top;
-	SDL_Texture* sprites;
+	SDL_Texture* tunnel1;
+	SDL_Texture* tunnel2;
+	SDL_Texture* spritesheet;
 
 	// Animations
+
 	Animation canon;
 	Animation boss;
 	Animation hit_boss;
