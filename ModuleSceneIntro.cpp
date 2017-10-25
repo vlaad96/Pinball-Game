@@ -11,7 +11,7 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	circle = NULL;
+	ball = NULL;
 	ray_on = false;
 	
 }
@@ -37,18 +37,151 @@ bool ModuleSceneIntro::Start()
 
 	//Audio
 
+	fx_flopper = App->audio->LoadFx("FX/Paddle_sound.ogg");
+	fx_collision = App->audio->LoadFx("FX/Contact_sound.ogg");
+	fx_kickers = App->audio->LoadFx("FX/Kickers_sound.ogg");
+	fx_gameover = App->audio->LoadFx("FX/Lose.ogg");
+	fx_saverhit = App->audio->LoadFx("FX/Hit_Saver.ogg");
+	fx_cannon = App->audio->LoadFx("FX/canon_shot.ogg");
+	fx_explosion = App->audio->LoadFx("FX/hiting_monster.ogg");
+	fx_chiploop = App->audio->LoadFx("FX/chip_loop.ogg");
+	fx_victory = App->audio->LoadFx("FX/Win.wav");
+
+
 	//Sensors on tunnels
+
+	tunnel_beginning = App->physics->CreateRectangleSensor(135, 261, 20, 1);
+	tunnel_finish = App->physics->CreateRectangleSensor(90, 640, 20, 1);
+	left_tunnel2 = App->physics->CreateRectangleSensor(42, 400, 10, 1);
+	right_tunnel2 = App->physics->CreateRectangleSensor(460, 400, 10, 1);
+	right_hole = App->physics->CreateRectangleSensor(480, 450, 2, 2);
+
 
 	//Playability sensors
 
+	midpoint = App->physics->CreateRectangleSensor(239, 440, 5, 1);
+	up_hole = App->physics->CreateRectangleSensor(308, 247, 5, 1);
+	cannon_senson = App->physics->CreateRectangleSensor(490, 600, 5, 1);
+	launcher = App->physics->CreateRectangleSensor(490, 800, 5, 1);
+	chip_loop = App->physics->CreateRectangleSensor(202, 102, 5, 1);
+	deadline = App->physics->CreateRectangleSensor(240, 900, 120, 1);
+	ball_saver_right = App->physics->CreateRectangleSensor(435, 772, 5, 1);
+	ball_saver_left = App->physics->CreateRectangleSensor(45, 772, 5, 1);
+	monster_hit = App->physics->CreateRectangleSensor(405, 161, 5, 1);
+
+
 	//variable initializing
+
+	Create_Limits();
+	Create_Kickers();
 
 	//Cannon animation
 
+	cannon.PushBack({ 3, 151, 56, 60 });
+	cannon.PushBack({ 65, 151, 56, 60 });
+	cannon.PushBack({ 129, 151, 56, 60 });
+	cannon.PushBack({ 3, 151, 56, 60 });
+	cannon.PushBack({ 3, 151, 56, 60 });
+	cannon.PushBack({ 3, 151, 56, 60 });
+	cannon.PushBack({ 3, 151, 56, 60 });
+	cannon.speed = 0.2f;
+	cannon.loop = false;
+
 	//Raptor animation
+
+	raptor.PushBack({ 3, 23, 106, 114 });
+	raptor.PushBack({ 119, 23, 100, 114 });
+	raptor.PushBack({ 229, 29, 84, 108 });
+	raptor.PushBack({ 323, 35, 100, 102 });
+
+	raptor.speed = 0.03f;
+	raptor.loop = true;
+
 
 	//Floppers animation
 
+	left_flopper.PushBack({ 477, 237, 42, 80 });
+	left_flopper.PushBack({ 529, 237, 42, 80 });
+	left_flopper.speed = 0.08f;
+	left_flopper.loop = true;
+
+	right_flopper.PushBack({ 581, 237, 42, 80 });
+	right_flopper.PushBack({ 633, 237, 42, 80 });
+	right_flopper.speed = 0.08f;
+	right_flopper.loop = true;
+
+	//Game over
+
+	game_over.PushBack({ 524, 1291, 516, 5 });
+	game_over.PushBack({ 524, 1291, 516, 10 });
+	game_over.PushBack({ 524, 1291, 516, 15 });
+	game_over.PushBack({ 524, 1291, 516, 20 });
+	game_over.PushBack({ 524, 1291, 516, 25 });
+	game_over.PushBack({ 524, 1291, 516, 30 });
+	game_over.PushBack({ 524, 1291, 516, 35 });
+	game_over.PushBack({ 524, 1291, 516, 40 });
+	game_over.PushBack({ 524, 1291, 516, 40 });
+	game_over.PushBack({ 524, 1291, 516, 40 });
+	game_over.PushBack({ 524, 1291, 516, 40 });
+	game_over.PushBack({ 524, 1291, 516, 40 });
+	game_over.PushBack({ 524, 1291, 516, 40 });
+	game_over.PushBack({ 524, 1291, 516, 40 });
+	game_over.PushBack({ 524, 1291, 516, 40 });
+	game_over.PushBack({ 524, 1291, 516, 40 });
+	game_over.PushBack({ 524, 1291, 516, 40 });
+	game_over.PushBack({ 524, 1291, 516, 40 });
+	game_over.PushBack({ 524, 1291, 516, 40 });
+	game_over.PushBack({ 524, 1291, 516, 40 });
+	game_over.PushBack({ 524, 1291, 516, 40 });
+	game_over.PushBack({ 524, 1291, 516, 40 });
+	game_over.PushBack({ 524, 1291, 516, 40 });
+	game_over.PushBack({ 524, 1291, 516, 35 });
+	game_over.PushBack({ 524, 1291, 516, 30 });
+	game_over.PushBack({ 524, 1291, 516, 25 });
+	game_over.PushBack({ 524, 1291, 516, 20 });
+	game_over.PushBack({ 524, 1291, 516, 15 });
+	game_over.PushBack({ 524, 1291, 516, 10 });
+	game_over.PushBack({ 524, 1291, 516, 5 });
+	game_over.speed = 0.1f;
+	game_over.loop = false;
+
+	//Win
+
+	win.PushBack({ 524, 1201, 516, 5 });
+	win.PushBack({ 524, 1201, 516, 10 });
+	win.PushBack({ 524, 1201, 516, 15 });
+	win.PushBack({ 524, 1201, 516, 20 });
+	win.PushBack({ 524, 1201, 516, 25 });
+	win.PushBack({ 524, 1201, 516, 30 });
+	win.PushBack({ 524, 1201, 516, 35 });
+	win.PushBack({ 524, 1201, 516, 40 });
+	win.PushBack({ 524, 1201, 516, 40 });
+	win.PushBack({ 524, 1201, 516, 40 });
+	win.PushBack({ 524, 1201, 516, 40 });
+	win.PushBack({ 524, 1201, 516, 40 });
+	win.PushBack({ 524, 1201, 516, 40 });
+	win.PushBack({ 524, 1201, 516, 40 });
+	win.PushBack({ 524, 1201, 516, 40 });
+	win.PushBack({ 524, 1201, 516, 40 });
+	win.PushBack({ 524, 1201, 516, 40 });
+	win.PushBack({ 524, 1201, 516, 40 });
+	win.PushBack({ 524, 1201, 516, 40 });
+	win.PushBack({ 524, 1201, 516, 40 });
+	win.PushBack({ 524, 1201, 516, 40 });
+	win.PushBack({ 524, 1201, 516, 40 });
+	win.PushBack({ 524, 1201, 516, 40 });
+	win.PushBack({ 524, 1201, 516, 35 });
+	win.PushBack({ 524, 1201, 516, 30 });
+	win.PushBack({ 524, 1201, 516, 25 });
+	win.PushBack({ 524, 1201, 516, 20 });
+	win.PushBack({ 524, 1201, 516, 15 });
+	win.PushBack({ 524, 1201, 516, 10 });
+	win.PushBack({ 524, 1201, 516, 5 });
+	win.speed = 0.1f;
+	win.loop = false;
+
+	left_flopper_body->body->GetFixtureList()->SetRestitution(1.25f);
+	right_flopper_body->body->GetFixtureList()->SetRestitution(1.25f);
 
 	return ret;
 }
@@ -64,6 +197,15 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
+	
+	//Background blit
+
+	App->renderer->Blit(background, 0, 0);
+
+	Check_Area();
+	
+	
+	
 	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		ray_on = !ray_on;

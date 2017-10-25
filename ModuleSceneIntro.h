@@ -36,8 +36,8 @@ public:
 	PhysBody* right_flopper2;
 	PhysBody* left_flopper2;
 
-	PhysBody* left_paddle_body;
-	PhysBody* right_paddle_body;
+	PhysBody* left_flopper_body;
+	PhysBody* right_flopper_body;
 
 	// Sensors 
 
@@ -48,7 +48,7 @@ public:
 	PhysBody* midpoint;
 	PhysBody* up_hole;
 	PhysBody* launcher;
-	PhysBody* cannon;
+	PhysBody* cannon_senson;
 	PhysBody* chip_loop;
 	PhysBody* ball_saver_right;
 	PhysBody* ball_saver_left;
@@ -58,6 +58,7 @@ public:
 
 	// Textures
 
+	SDL_Texture* ball;
 	SDL_Texture* background;
 	SDL_Texture* tunnel1;
 	SDL_Texture* tunnel2;
@@ -65,11 +66,11 @@ public:
 
 	// Animations
 
-	Animation canon;
-	Animation boss;
-	Animation hit_boss;
-	Animation paddle_left;
-	Animation paddle_right;
+	Animation cannon;
+	Animation raptor;
+	Animation raptor_hit;
+	Animation left_flopper;
+	Animation right_flopper;
 	Animation arrow_tunel2_left;
 	Animation arrow_tunel2_right;
 	Animation white_mid;
@@ -102,15 +103,15 @@ public:
 	bool played = false;
 
 	//FX & sounds
-	uint paddle_fx;
-	uint contact_fx;
-	uint kickers_fx;
-	uint lose;
-	uint saver_hit;
-	uint canon_sound;
-	uint explosion;
-	uint chip_sound;
-	uint win_fx;
+	uint fx_flopper;
+	uint fx_collision;
+	uint fx_kickers;
+	uint fx_gameover;
+	uint fx_saverhit;
+	uint fx_cannon;
+	uint fx_explosion;
+	uint fx_chiploop;
+	uint fx_victory;
 
 	uint main_theme;
 

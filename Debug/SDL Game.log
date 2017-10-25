@@ -1,0 +1,55 @@
+﻿  ModuleWindow.cpp
+  ModuleTextures.cpp
+  ModuleSceneIntro.cpp
+c:\users\vlad\documents\github\pinball-game\animation.h(44): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(14): error C2065: 'circle': undeclared identifier
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(76): error C2065: 'circles': undeclared identifier
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(76): error C2228: left of '.add' must have class/struct/union
+  c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(76): note: type is 'unknown-type'
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(76): error C2660: 'ModulePhysics::CreateCircle': function does not take 3 arguments
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(77): error C2065: 'circles': undeclared identifier
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(77): error C2228: left of '.getLast' must have class/struct/union
+  c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(77): note: type is 'unknown-type'
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(77): error C2227: left of '->data' must point to class/struct/union/generic type
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(77): error C2227: left of '->listener' must point to class/struct/union/generic type
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(82): error C2065: 'boxes': undeclared identifier
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(82): error C2228: left of '.add' must have class/struct/union
+  c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(82): note: type is 'unknown-type'
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(123): error C2065: 'ricks': undeclared identifier
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(123): error C2228: left of '.add' must have class/struct/union
+  c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(123): note: type is 'unknown-type'
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(136): error C2065: 'circles': undeclared identifier
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(136): error C2228: left of '.getFirst' must have class/struct/union
+  c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(136): note: type is 'unknown-type'
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(143): error C2065: 'circle': undeclared identifier
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(147): error C2065: 'boxes': undeclared identifier
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(147): error C2228: left of '.getFirst' must have class/struct/union
+  c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(147): note: type is 'unknown-type'
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(153): error C2065: 'box': undeclared identifier
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(163): error C2065: 'ricks': undeclared identifier
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(163): error C2228: left of '.getFirst' must have class/struct/union
+  c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(163): note: type is 'unknown-type'
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(169): error C2065: 'rick': undeclared identifier
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(176): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(178): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(180): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(183): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\vlad\documents\github\pinball-game\modulesceneintro.cpp(193): error C2065: 'bonus_fx': undeclared identifier
+  ModuleRender.cpp
+  ModulePlayer.cpp
+  ModulePhysics.cpp
+c:\users\vlad\documents\github\pinball-game\modulephysics.cpp(117): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\vlad\documents\github\pinball-game\modulephysics.cpp(118): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\vlad\documents\github\pinball-game\modulephysics.cpp(161): warning C4018: '<': signed/unsigned mismatch
+c:\users\vlad\documents\github\pinball-game\modulephysics.cpp(342): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\vlad\documents\github\pinball-game\modulephysics.cpp(343): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\vlad\documents\github\pinball-game\modulephysics.cpp(349): warning C4244: 'return': conversion from 'float32' to 'int', possible loss of data
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(131): warning C4577: 'noexcept' used with no exception handling mode specified; termination on exception is not guaranteed. Specify /EHsc
+  ModuleInput.cpp
+  ModuleAudio.cpp
+  Main.cpp
+  log.cpp
+  Application.cpp
+c:\users\vlad\documents\github\pinball-game\animation.h(44): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\limits(210): warning C4577: 'noexcept' used with no exception handling mode specified; termination on exception is not guaranteed. Specify /EHsc
+  Generating Code...
