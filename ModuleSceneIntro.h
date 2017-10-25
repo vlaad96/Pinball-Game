@@ -58,7 +58,6 @@ public:
 
 	// Textures
 
-	SDL_Texture* ball;
 	SDL_Texture* background;
 	SDL_Texture* tunnel1;
 	SDL_Texture* tunnel2;
@@ -93,13 +92,12 @@ public:
 	bool on_tunnel;
 	bool on_canon;
 	bool on_launcher;
-	bool on_hole;
-	bool boss_hited;
+	bool boss_hit;
 	bool on_top;
 	bool want_to_delete = false;
-	bool mid_hitted = false;
-	bool gameover = false;
-	bool winning = false;
+	bool mid_hit = false;
+	bool lost = false;
+	bool won = false;
 	bool played = false;
 
 	//FX & sounds

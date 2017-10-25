@@ -204,69 +204,69 @@ update_status ModuleSceneIntro::Update()
 
 	Check_Area();
 	
-	
-	
-	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	//Input
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		ray_on = !ray_on;
 		ray.x = App->input->GetMouseX();
 		ray.y = App->input->GetMouseY();
 	}
-
-	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN && (lost || won))
 	{
-		circles.add(App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 25));
-		circles.getLast()->data->listener = this;
+		played = false;
+		App->player->number_balls = 5;
+		App->player->score = 0;
+		lost = false;
+		won = false;
+		game_over.Reset();
+		win.Reset();
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->player->number_balls > 0)
 	{
-		boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50));
+		if (ball == NULL)
+		{
+			played = false;
+			App->player->number_balls--;
+			ball = App->physics->CreateCircle(490, 800, 15, "static", 0x0004);
+		}
+		ball->listener = this;
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		// Pivot 0, 0
-		int rick_head[64] = {
-			14, 36,
-			42, 40,
-			40, 0,
-			75, 30,
-			88, 4,
-			94, 39,
-			111, 36,
-			104, 58,
-			107, 62,
-			117, 67,
-			109, 73,
-			110, 85,
-			106, 91,
-			109, 99,
-			103, 104,
-			100, 115,
-			106, 121,
-			103, 125,
-			98, 126,
-			95, 137,
-			83, 147,
-			67, 147,
-			53, 140,
-			46, 132,
-			34, 136,
-			38, 126,
-			23, 123,
-			30, 114,
-			10, 102,
-			29, 90,
-			0, 75,
-			30, 62
-		};
-
-		ricks.add(App->physics->CreateChain(App->input->GetMouseX(), App->input->GetMouseY(), rick_head, 64));
+		rev_joint_left->SetMotorSpeed(30);
+		rev_joint_left2->SetMotorSpeed(30);
 	}
+	else
+	{
+		rev_joint_left->SetMotorSpeed(-30);
+		rev_joint_left2->SetMotorSpeed(-30);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN && ball != nullptr && on_launcher)
+	{
+		ball->body->SetType(b2_dynamicBody);
+		ball->body->SetLinearVelocity(b2Vec2(0, -10));
+		on_launcher = false;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
+		rev_joint_right->SetMotorSpeed(-30);
+		rev_joint_right2->SetMotorSpeed(-30);
+	}
+	else
+	{
+		rev_joint_right->SetMotorSpeed(30);
+		rev_joint_right2->SetMotorSpeed(30);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) App->audio->PlayFx(kickers_fx);
 
 	// Prepare for raycast ------------------------------------------------------
-	
+
 	iPoint mouse;
 	mouse.x = App->input->GetMouseX();
 	mouse.y = App->input->GetMouseY();
@@ -274,56 +274,159 @@ update_status ModuleSceneIntro::Update()
 
 	fVector normal(0.0f, 0.0f);
 
-	// All draw functions ------------------------------------------------------
-	p2List_item<PhysBody*>* c = circles.getFirst();
+	// Draw paddles -----------------------------------------------------------------
 
-	while(c != NULL)
+	App->renderer->Blit(sprites, 112, 620, &paddle_left.GetCurrentFrame());
+	App->renderer->Blit(sprites, 330, 620, &paddle_right.GetCurrentFrame());
+
+	//Draw middle hole lights
+	Draw_Lights();
+
+	//Draw ball saver
+	SDL_Rect saver;
+	saver.x = 113;
+	saver.y = 383;
+	saver.w = 32;
+	saver.h = 42;
+
+	App->renderer->Blit(sprites, 30, 772, &saver);
+	App->renderer->Blit(sprites, 422, 772, &saver);
+
+	// Draw white mid --------------------------------------------------------------------
+	if (white_mid.Finished())
 	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		if(c->data->Contains(App->input->GetMouseX(), App->input->GetMouseY()))
-			App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
-		c = c->next;
+		mid_hitted = false;
+		white_mid.Reset();
+	}
+	else if (mid_hitted)
+		App->renderer->Blit(sprites, 125, 270, &white_mid.GetCurrentFrame());
+
+	if (middle_hole_hit < 3)
+	{
+		right_hole->body->SetActive(false);
+
+		SDL_Rect section;
+		section.x = 757;
+		section.y = 220;
+		section.w = 41;
+		section.h = 41;
+
+		App->renderer->Blit(sprites, 470, 420, &section);
+	}
+	else
+	{
+		right_hole->body->SetActive(true);
 	}
 
-	c = boxes.getFirst();
+	// Draw kickers -----------------------------------------------------------------
+	Draw_Kickers();
 
-	while(c != NULL)
+	// Draw ball & tunnel ----------------------------------------------------------------
+
+	if (on_tunnel) App->renderer->Blit(tunnels, 0, -1);
+	if (on_top) App->renderer->Blit(tunnels_top, 0, -1);
+
+	int x, y;
+	if (ball != NULL)
 	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		App->renderer->Blit(box, x, y, NULL, 1.0f, c->data->GetRotation());
-		if(ray_on)
-		{
-			int hit = c->data->RayCast(ray.x, ray.y, mouse.x, mouse.y, normal.x, normal.y);
-			if(hit >= 0)
-				ray_hit = hit;
-		}
-		c = c->next;
+		ball->GetPosition(x, y);
+		ball->body->SetTransform(b2Vec2(ball->body->GetPosition().x, ball->body->GetPosition().y), 90);
+
+		SDL_Rect section;
+		section.x = 0;
+		section.y = 555;
+		section.h = 31;
+		section.w = 31;
+
+		App->renderer->Blit(sprites, x - 2, y, &section, 1.0f, ball->GetRotation());
 	}
 
-	c = ricks.getFirst();
+	if (!on_tunnel) App->renderer->Blit(tunnels, 0, -1);
+	if (!on_top) App->renderer->Blit(tunnels_top, 0, -1);
 
-	while(c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		App->renderer->Blit(rick, x, y, NULL, 1.0f, c->data->GetRotation());
-		c = c->next;
-	}
+	// Ray --------------------------------------------------------------------
 
-	// ray -----------------
-	if(ray_on == true)
+	if (ray_on == true)
 	{
-		fVector destination(mouse.x-ray.x, mouse.y-ray.y);
+		fVector destination(mouse.x - ray.x, mouse.y - ray.y);
 		destination.Normalize();
 		destination *= ray_hit;
 
 		App->renderer->DrawLine(ray.x, ray.y, ray.x + destination.x, ray.y + destination.y, 255, 255, 255);
 
-		if(normal.x != 0.0f)
+		if (normal.x != 0.0f)
 			App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
 	}
+
+	// Drawing canon ---------------------------------------------------------
+
+	if (!on_canon)
+	{
+		App->renderer->Blit(sprites, 455, 565, &canon.frames[0]);
+		canon.Reset();
+	}
+	else
+		App->renderer->Blit(sprites, 455, 565, &canon.GetCurrentFrame());
+
+
+	//Drawing boss + explossion
+	App->renderer->Blit(sprites, 365, 95, &boss.GetCurrentFrame());
+
+	if (boss_hited)
+	{
+		SDL_Rect last_frame;
+		last_frame.x = 617;
+		last_frame.y = 85;
+		last_frame.w = 58;
+		last_frame.h = 52;
+
+		App->renderer->Blit(sprites, 378, 132, &hit_boss.GetCurrentFrame());
+		if (hit_boss.Finished())
+		{
+			boss_hited = false;
+			hit_boss.Reset();
+		}
+	}
+
+	// Deleting ball if want_to_delete == true -------------------------------
+
+	if (want_to_delete == true)
+	{
+		App->physics->DeleteBody(ball->body);
+		ball = nullptr;
+		want_to_delete = false;
+	}
+
+	// Draw yellow static kicker ------------------------------------------
+	SDL_Rect section5;
+	section5.x = 680;
+	section5.y = 188;
+	section5.h = 23;
+	section5.w = 65;
+
+	App->renderer->Blit(sprites, 340, 48, &section5, 1.0f, 0, 50, 15);
+
+	// Draw Arrow ------------------------------------------------------
+	if (middle_hole_hit < 3) App->renderer->Blit(sprites, 227, 338, &arrow.GetCurrentFrame());
+	else App->renderer->Blit(sprites, 475, 400, &arrow.GetCurrentFrame());
+
+	// Win, game over, playing -----------------------------------------
+	if (gameover)
+	{
+		color_circles = 0;
+		App->renderer->Blit(sprites, 0, 0, &game_over.GetCurrentFrame());
+	}
+	if (color_circles == 4)
+	{
+		winning = true;
+		App->renderer->Blit(sprites, 0, 0, &win.GetCurrentFrame());
+		if (!played)
+		{
+			App->audio->PlayFx(win_fx);
+			played = true;
+		}
+	}
+
 
 	return UPDATE_CONTINUE;
 }
