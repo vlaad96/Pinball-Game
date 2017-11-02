@@ -63,6 +63,7 @@ public:
 	SDL_Rect last_frame;
 	SDL_Rect section5;
 
+	SDL_Texture* circle;
 	SDL_Texture* background;
 	SDL_Texture* tunnel1;
 	SDL_Texture* tunnel2;

@@ -11,7 +11,7 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	ball = NULL;
+	circle = NULL;
 	ray_on = false;
 	
 }
@@ -72,6 +72,22 @@ bool ModuleSceneIntro::Start()
 
 	//variable initializing
 
+	//initializing variables
+
+	on_launcher = true;
+	on_tunnel = false;
+	on_canon = false;
+	on_top = false;
+	boss_hit = false;
+
+	middle_hole_hit = 0;
+	number_arrow_lights = 4;
+	up_hole_hit = 0;
+	chip_lights_on = 0;
+	color_circles = 0;
+
+	//
+
 	Create_Limits();
 	Create_Kickers();
 
@@ -109,6 +125,70 @@ bool ModuleSceneIntro::Start()
 	right_floppers.PushBack({ 633, 237, 42, 80 });
 	right_floppers.speed = 0.08f;
 	right_floppers.loop = true;
+
+	arrow_tunel2_right.PushBack({ 850, 601, 30, 28 });
+	arrow_tunel2_right.PushBack({ 0,0,0,0 });
+	arrow_tunel2_right.speed = 0.08f;
+	arrow_tunel2_right.loop = true;
+
+	arrow_tunel2_left.PushBack({ 496, 601, 30, 28 });
+	arrow_tunel2_left.PushBack({ 0,0,0,0 });
+	arrow_tunel2_left.speed = 0.08f;
+	arrow_tunel2_left.loop = true;
+
+	raptor_hit.PushBack({ 479, 77, 60, 60 });
+	raptor_hit.PushBack({ 549, 85, 58, 52 });
+	raptor_hit.PushBack({ 617, 85, 58, 52 });
+	raptor_hit.speed = 0.08f;
+	raptor_hit.loop = false;
+
+	white_mid.PushBack({ 30, 894, 229, 243 });
+	white_mid.PushBack({ 265, 908, 229, 243 });
+	white_mid.PushBack({ 487, 908, 229, 243 });
+	white_mid.PushBack({ 742, 886, 229, 243 });
+	white_mid.PushBack({ 698, 0, 1, 1 });
+	white_mid.speed = 0.18f;
+	white_mid.loop = false;
+
+	arrow.PushBack({ 744, 515, 28, 35 });
+	arrow.PushBack({ 744, 510, 28, 40 });
+	arrow.speed = 0.1f;
+	arrow.loop = true;
+
+	blue_arrow_top.PushBack({ 165, 611, 46, 38 });
+	blue_arrow_top.PushBack({ 0,0,0,0 });
+	blue_arrow_top.speed = 0.1f;
+	blue_arrow_top.loop = true;
+
+	monster_arrow.PushBack({ 353, 593, 18, 24 });
+	monster_arrow.PushBack({ 0,0,0,0 });
+	monster_arrow.speed = 0.05f;
+	monster_arrow.loop = true;
+
+	down_lights.PushBack({ 965, 187, 20, 22 });
+	down_lights.PushBack({ 0,0,0,0 });
+	down_lights.speed = 0.005f;
+	down_lights.loop = true;
+
+	map_arrows.PushBack({ 507, 652, 40, 32 });
+	map_arrows.PushBack({ 0,0,0,0 });
+	map_arrows.PushBack({ 550, 652, 40, 64 });
+	map_arrows.PushBack({ 0,0,0,0 });
+	map_arrows.PushBack({ 592, 652, 40, 96 });
+	map_arrows.PushBack({ 0,0,0,0 });
+	map_arrows.speed = 0.05f;
+	map_arrows.loop = true;
+
+	yellow_arrows.PushBack({ 584, 442, 72, 144 });
+	yellow_arrows.PushBack({ 0,0,0,0 });
+	yellow_arrows.PushBack({ 662, 443, 72, 144 });
+	yellow_arrows.PushBack({ 0,0,0,0 });
+	yellow_arrows.PushBack({ 788, 449, 72, 144 });
+	yellow_arrows.PushBack({ 0,0,0,0 });
+	yellow_arrows.PushBack({ 866, 449, 72, 144 });
+	yellow_arrows.PushBack({ 0,0,0,0 });
+	yellow_arrows.speed = 0.05f;
+	yellow_arrows.loop = true;
 
 	//Game over
 
@@ -236,13 +316,13 @@ update_status ModuleSceneIntro::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		rev_joint_left->SetMotorSpeed(30);
-		rev_joint_left2->SetMotorSpeed(30);
+		rev_joint_left->SetMotorSpeed(25);
+		rev_joint_left2->SetMotorSpeed(25);
 	}
 	else
 	{
-		rev_joint_left->SetMotorSpeed(-30);
-		rev_joint_left2->SetMotorSpeed(-30);
+		rev_joint_left->SetMotorSpeed(-25);
+		rev_joint_left2->SetMotorSpeed(-25);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN && ball != nullptr && on_launcher)
@@ -254,13 +334,13 @@ update_status ModuleSceneIntro::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		rev_joint_right->SetMotorSpeed(-30);
-		rev_joint_right2->SetMotorSpeed(-30);
+		rev_joint_right->SetMotorSpeed(-25);
+		rev_joint_right2->SetMotorSpeed(-25);
 	}
 	else
 	{
-		rev_joint_right->SetMotorSpeed(30);
-		rev_joint_right2->SetMotorSpeed(30);
+		rev_joint_right->SetMotorSpeed(25);
+		rev_joint_right2->SetMotorSpeed(25);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) App->audio->PlayFx(fx_kickers);
@@ -274,7 +354,7 @@ update_status ModuleSceneIntro::Update()
 
 	fVector normal(0.0f, 0.0f);
 
-	// Draw paddles -----------------------------------------------------------------
+	// Draw floppers -----------------------------------------------------------------
 
 	App->renderer->Blit(spritesheet, 112, 620, &left_floppers.GetCurrentFrame());
 	App->renderer->Blit(spritesheet, 330, 620, &right_floppers.GetCurrentFrame());
@@ -1122,8 +1202,6 @@ void ModuleSceneIntro::Create_Limits()
 	limits_background.add(App->physics->CreateChain(0, 0, bridge1, 18, "static", 0x0001, 0x0004));
 	limits_background.add(App->physics->CreateChain(0, 0, bridge2, 18, "static", 0x0001, 0x0004));
 }
-
-void CreatePolygon(int x, int y, int* points, int size, float density, uint16 category, uint16 mask);
 
 void ModuleSceneIntro::Create_Kickers()
 {

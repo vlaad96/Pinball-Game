@@ -1,24 +1,14 @@
-﻿  Application.cpp
+﻿  ModuleSceneIntro.cpp
 c:\users\vlad\documents\github\pinball-game\pinball_game\Animation.h(44): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\limits(210): warning C4577: 'noexcept' used with no exception handling mode specified; termination on exception is not guaranteed. Specify /EHsc
-  ModulePhysics.cpp
-ModulePhysics.cpp(117): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-ModulePhysics.cpp(118): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-ModulePhysics.cpp(134): warning C4018: '<': signed/unsigned mismatch
-ModulePhysics.cpp(196): warning C4018: '<': signed/unsigned mismatch
-ModulePhysics.cpp(387): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-ModulePhysics.cpp(388): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-ModulePhysics.cpp(394): warning C4244: 'return': conversion from 'float32' to 'int', possible loss of data
-C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\cmath(131): warning C4577: 'noexcept' used with no exception handling mode specified; termination on exception is not guaranteed. Specify /EHsc
-  ModuleSceneIntro.cpp
-c:\users\vlad\documents\github\pinball-game\pinball_game\Animation.h(44): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-ModuleSceneIntro.cpp(349): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-ModuleSceneIntro.cpp(351): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-ModuleSceneIntro.cpp(353): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-ModuleSceneIntro.cpp(356): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+ModuleSceneIntro.cpp(429): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+ModuleSceneIntro.cpp(431): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+ModuleSceneIntro.cpp(433): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+ModuleSceneIntro.cpp(436): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\limits(210): warning C4577: 'noexcept' used with no exception handling mode specified; termination on exception is not guaranteed. Specify /EHsc
   Generating code
-  All 224 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  1 of 224 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   SDL Game.vcxproj -> C:\Users\Vlad\Documents\GitHub\Pinball-Game\Pinball_Game\Release\2D Physics - class 4.exe
   SDL Game.vcxproj -> C:\Users\Vlad\Documents\GitHub\Pinball-Game\Pinball_Game\Release\2D Physics - class 4.pdb (Full PDB)
