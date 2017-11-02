@@ -42,11 +42,10 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
-	PhysBody* CreateCircle(int x, int y, int radius, const char* body_type, uint category);
-	PhysBody* CreateRectangle(int x, int y, int width, int height);
+	PhysBody* CreateCircle(int x, int y, int radius, const char* type, uint16 category, uint16 mask);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
-	PhysBody* CreateChain(int x, int y, int* points, int size, const char* body_type);
-	b2RevoluteJoint* CreateRevolutionJoint(PhysBody* A, PhysBody* B, float anchor_x, float anchor_y, int reference_angle, int lower_angle, int upper_angle);
+	PhysBody* CreateChain(int x, int y, int* points, int size, const char* type, uint16 category, uint16 mask);
+	b2RevoluteJoint* CreateRevoluteJoint(PhysBody* A, PhysBody* B, float anchor_x, float anchor_y, int reference_Angle, int lower_angle, int upper_angle);
 	PhysBody* CreatePolygon(int x, int y, int* points, int size, float density, uint16 category, uint16 mask);
 
 	// b2ContactListener ---

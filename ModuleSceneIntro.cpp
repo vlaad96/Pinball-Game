@@ -515,7 +515,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	{
 		mid_hit = true;
 		middle_hole_hit++;
-		if (!win) App->player->score += 250;
+		if (!won) App->player->score += 250;
 	}
 
 	else if (bodyB == ball_saver_left || bodyB == ball_saver_right)
@@ -597,7 +597,7 @@ void ModuleSceneIntro::Create_Limits()
 		71, 410
 	};
 
-	tunnel_2_1 = App->physics->CreateChain(0, 0, piece_1_tunnel_3, 102, "static");// , 0x0001, 0x0004);
+	tunnel_2_1 = App->physics->CreateChain(0, 0, piece_1_tunnel_3, 102, "static", 0x0001, 0x0004);
 
 	int piece_2_tunnel_3[134] = {
 		22, 411,
@@ -669,7 +669,7 @@ void ModuleSceneIntro::Create_Limits()
 		18, 400
 	};
 
-	tunnel_2_2 = App->physics->CreateChain(0, 0, piece_2_tunnel_3, 134, "static");//, 0x0001, 0x0004);
+	tunnel_2_2 = App->physics->CreateChain(0, 0, piece_2_tunnel_3, 134, "static", 0x0001, 0x0004);
 
 	// Creating tunnels limits -------------------------
 
@@ -1078,7 +1078,7 @@ void ModuleSceneIntro::Create_Limits()
 	};
 
 	limits_background.add(App->physics->CreateChain(0, 0, Paddle_Left, 20, "static", 0x0001, 0x0004));
-	paddle_left_bdy = limits_background.getLast()->data;
+	left_flopper_body = limits_background.getLast()->data;
 
 	int Paddle_Right[18] = {
 		366, 622,
@@ -1093,7 +1093,7 @@ void ModuleSceneIntro::Create_Limits()
 	};
 
 	limits_background.add(App->physics->CreateChain(0, 0, Paddle_Right, 18, "static", 0x0001, 0x0004));
-	paddle_right_bdy = limits_background.getLast()->data;
+	right_flopper_body = limits_background.getLast()->data;
 
 	int bridge1[18] = {
 		192, 210,
