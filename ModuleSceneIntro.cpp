@@ -444,22 +444,22 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	else if (bodyB == monster_hit_sensor)
 	{
 		boss_hited = true;
-		if (!winning)App->player->score += 1000;
+		if (!win)App->player->score += 1000;
 		App->audio->PlayFx(explosion);
 	}
 
 	else if (bodyB == right_hole)
 	{
 		color_circles++;
-		if (!winning) App->player->score += 3000;
+		if (!win) App->player->score += 3000;
 		middle_hole_hit = 0;
 	}
 
 	else if (bodyB == deadline)
 	{
-		if (!winning)
+		if (!win)
 		{
-			if (App->player->balls_lefting == 0)
+			if (App->player->number_balls == 0)
 			{
 				gameover = true;
 				App->audio->PlayFx(lose);
@@ -472,7 +472,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		else
 		{
 			color_circles = 0;
-			App->player->balls_lefting = 0;
+			App->player->number_balls = 0;
 			want_to_delete = true;
 			on_launcher = true;
 			chip_lights_on = 0;
@@ -482,10 +482,10 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 	else if (bodyB == up_hole_sensor && up_hole_hit < 3) {
 		up_hole_hit++;
-		if (!winning)App->player->score += 250;
+		if (!win)App->player->score += 250;
 
 		if (up_hole_hit == 3) {
-			if (!winning)App->player->score += 1000;
+			if (!win)App->player->score += 1000;
 		}
 	}
 
@@ -502,20 +502,20 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	else if (bodyB == chip_loop_sensor && chip_lights_on < 4)
 	{
 		chip_lights_on++;
-		if (!winning)App->player->score += 500;
+		if (!win)App->player->score += 500;
 
 		App->audio->PlayFx(chip_sound);
 
 		if (chip_lights_on == 4) {
-			if (!winning) App->player->score += 2000;
+			if (!win) App->player->score += 2000;
 		}
 	}
 
 	else if (bodyB == mid_sensor && middle_hole_hit < 3 && color_circles < 4)
 	{
-		mid_hitted = true;
+		mid_hit = true;
 		middle_hole_hit++;
-		if (!winning) App->player->score += 250;
+		if (!win) App->player->score += 250;
 	}
 
 	else if (bodyB == ball_saver_left || bodyB == ball_saver_right)
@@ -525,10 +525,10 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	}
 
 
-	else if ((bodyB == left_kicker || bodyB == right_kicker) && chip_lights_on == 4) {
+	else if ((bodyB == left_flopper || bodyB == right_kicker) && chip_lights_on == 4) {
 		chip_lights_on = 0;
 	}
-	else if ((bodyB == left_kicker || bodyB == right_kicker) && up_hole_hit == 3) {
+	else if ((bodyB == left_flopper || bodyB == right_kicker) && up_hole_hit == 3) {
 		up_hole_hit = 0;
 	}
 
@@ -1125,7 +1125,7 @@ void ModuleSceneIntro::Create_Limits()
 
 void ModuleSceneIntro::Create_Kickers()
 {
-	int left_kicker_vertices[8] = {
+	int left_flopper_vertices[8] = {
 		0, 7,
 		0, -7,
 		48, -2,
@@ -1139,7 +1139,7 @@ void ModuleSceneIntro::Create_Kickers()
 		-48, 2
 	};
 
-	int left_kicker_vertices2[8] = {
+	int left_flopper_vertices2[8] = {
 		0, 7,
 		0, -7,
 		48, -2,
@@ -1153,17 +1153,17 @@ void ModuleSceneIntro::Create_Kickers()
 		-48, 2
 	};
 
-	left_kicker = App->physics->CreatePolygon(180, 768, left_kicker_vertices, 8, 1.0f, 0x0001, 0x0004);
+	left_flopper = App->physics->CreatePolygon(180, 768, left_flopper_vertices, 8, 1.0f, 0x0001, 0x0004);
 	PhysBody* B = App->physics->CreateCircle(180, 768, 7, "static", 0x0001, 0x0004);
-	rev_joint_left = App->physics->CreateRevoluteJoint(left_kicker, B, 0, 0, -5, -15, 15);
+	rev_joint_left = App->physics->CreateRevoluteJoint(left_flopper, B, 0, 0, -5, -15, 15);
 
 	right_kicker = App->physics->CreatePolygon(305, 768, right_kicker_vertices, 8, 1.0f, 0x0001, 0x0004);
 	PhysBody* B2 = App->physics->CreateCircle(305, 768, 7, "static", 0x0001, 0x0004);
 	rev_joint_right = App->physics->CreateRevoluteJoint(right_kicker, B2, 0, 0, -180, 165, 200);
 
-	left_kicker2 = App->physics->CreatePolygon(69, 367, left_kicker_vertices2, 8, 1.0f, 0x0001, 0x0004);
+	left_flopper2 = App->physics->CreatePolygon(69, 367, left_flopper_vertices2, 8, 1.0f, 0x0001, 0x0004);
 	PhysBody* B3 = App->physics->CreateCircle(69, 367, 7, "static", 0x0001, 0x0004);
-	rev_joint_left2 = App->physics->CreateRevoluteJoint(left_kicker2, B3, 0, 0, -10, -55, -25);
+	rev_joint_left2 = App->physics->CreateRevoluteJoint(left_flopper2, B3, 0, 0, -10, -55, -25);
 
 	right_kicker2 = App->physics->CreatePolygon(450, 510, right_kicker_vertices2, 8, 1.0f, 0x0001, 0x0004);
 	PhysBody* B4 = App->physics->CreateCircle(450, 510, 7, "static", 0x0001, 0x0004);
