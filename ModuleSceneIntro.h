@@ -57,6 +57,11 @@ public:
 	PhysBody* deadline;
 
 	// Textures
+	
+	SDL_Rect section;
+	SDL_Rect saver;
+	SDL_Rect last_frame;
+	SDL_Rect section5;
 
 	SDL_Texture* background;
 	SDL_Texture* tunnel1;
