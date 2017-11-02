@@ -32,7 +32,7 @@ bool ModuleSceneIntro::Start()
 	background = App->textures->Load("/spritesheet/Background.png");
 	tunnel1 = App->textures->Load("/spritesheet/T1.png");
 	tunnel2 = App->textures->Load("/spritesheet/T2.png");
-	spritesheet = App->textures->Load("/spritesheet/sprites.png");
+	spritesheet= App->textures->Load("/spritesheet/sprites.png");
 
 
 	//Audio
@@ -40,12 +40,12 @@ bool ModuleSceneIntro::Start()
 	fx_flopper = App->audio->LoadFx("FX/Paddle_sound.ogg");
 	fx_collision = App->audio->LoadFx("FX/Contact_sound.ogg");
 	fx_kickers = App->audio->LoadFx("FX/Kickers_sound.ogg");
-	fx_gameover = App->audio->LoadFx("FX/Lose.ogg");
+	fx_gameover = App->audio->LoadFx("FX/fx_gameover.ogg");
 	fx_saverhit = App->audio->LoadFx("FX/Hit_Saver.ogg");
 	fx_cannon = App->audio->LoadFx("FX/canon_shot.ogg");
 	fx_explosion = App->audio->LoadFx("FX/hiting_monster.ogg");
 	fx_chiploop = App->audio->LoadFx("FX/chip_loop.ogg");
-	fx_victory = App->audio->LoadFx("FX/Win.wav");
+	fx_victory = App->audio->LoadFx("FX/won.wav");
 
 
 	//Sensors on tunnels
@@ -61,7 +61,7 @@ bool ModuleSceneIntro::Start()
 
 	midpoint = App->physics->CreateRectangleSensor(239, 440, 5, 1);
 	up_hole = App->physics->CreateRectangleSensor(308, 247, 5, 1);
-	cannon_senson = App->physics->CreateRectangleSensor(490, 600, 5, 1);
+	cannon_sensor = App->physics->CreateRectangleSensor(490, 600, 5, 1);
 	launcher = App->physics->CreateRectangleSensor(490, 800, 5, 1);
 	chip_loop = App->physics->CreateRectangleSensor(202, 102, 5, 1);
 	deadline = App->physics->CreateRectangleSensor(240, 900, 120, 1);
@@ -100,15 +100,15 @@ bool ModuleSceneIntro::Start()
 
 	//Floppers animation
 
-	left_flopper.PushBack({ 477, 237, 42, 80 });
-	left_flopper.PushBack({ 529, 237, 42, 80 });
-	left_flopper.speed = 0.08f;
-	left_flopper.loop = true;
+	left_floppers.PushBack({ 477, 237, 42, 80 });
+	left_floppers.PushBack({ 529, 237, 42, 80 });
+	left_floppers.speed = 0.08f;
+	left_floppers.loop = true;
 
-	right_flopper.PushBack({ 581, 237, 42, 80 });
-	right_flopper.PushBack({ 633, 237, 42, 80 });
-	right_flopper.speed = 0.08f;
-	right_flopper.loop = true;
+	right_floppers.PushBack({ 581, 237, 42, 80 });
+	right_floppers.PushBack({ 633, 237, 42, 80 });
+	right_floppers.speed = 0.08f;
+	right_floppers.loop = true;
 
 	//Game over
 
@@ -145,7 +145,7 @@ bool ModuleSceneIntro::Start()
 	game_over.speed = 0.1f;
 	game_over.loop = false;
 
-	//Win
+	//won
 
 	win.PushBack({ 524, 1201, 516, 5 });
 	win.PushBack({ 524, 1201, 516, 10 });
@@ -229,7 +229,7 @@ update_status ModuleSceneIntro::Update()
 		{
 			played = false;
 			App->player->number_balls--;
-			ball = App->physics->CreateCircle(490, 800, 15, "static", 0x0004);
+			ball = App->physics->CreateCircle(490, 800, 15, "static", 0x0004,0x000);
 		}
 		ball->listener = this;
 	}
@@ -263,7 +263,7 @@ update_status ModuleSceneIntro::Update()
 		rev_joint_right2->SetMotorSpeed(30);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) App->audio->PlayFx(kickers_fx);
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) App->audio->PlayFx(fx_kickers);
 
 	// Prepare for raycast ------------------------------------------------------
 
@@ -276,8 +276,8 @@ update_status ModuleSceneIntro::Update()
 
 	// Draw paddles -----------------------------------------------------------------
 
-	App->renderer->Blit(spritesheet, 112, 620, &left_flopper.GetCurrentFrame());
-	App->renderer->Blit(spritesheet, 330, 620, &right_flopper.GetCurrentFrame());
+	App->renderer->Blit(spritesheet, 112, 620, &left_floppers.GetCurrentFrame());
+	App->renderer->Blit(spritesheet, 330, 620, &right_floppers.GetCurrentFrame());
 
 	//Draw middle hole lights
 	Draw_Lights();
@@ -356,7 +356,7 @@ update_status ModuleSceneIntro::Update()
 			App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
 	}
 
-	// Drawing canon ---------------------------------------------------------
+	// Drawong canon ---------------------------------------------------------
 
 	if (!on_canon)
 	{
@@ -367,7 +367,7 @@ update_status ModuleSceneIntro::Update()
 		App->renderer->Blit(spritesheet, 455, 565, &cannon.GetCurrentFrame());
 
 
-	//Drawing boss + explossion
+	//Drawong boss + explossion
 	App->renderer->Blit(spritesheet, 365, 95, &raptor.GetCurrentFrame());
 
 	if (boss_hit)
@@ -408,7 +408,7 @@ update_status ModuleSceneIntro::Update()
 	if (middle_hole_hit < 3) App->renderer->Blit(spritesheet, 227, 338, &arrow.GetCurrentFrame());
 	else App->renderer->Blit(spritesheet, 475, 400, &arrow.GetCurrentFrame());
 
-	// Win, game over, playing -----------------------------------------
+	// won, game over, playing -----------------------------------------
 	if (lost)
 	{
 		color_circles = 0;
@@ -431,38 +431,38 @@ update_status ModuleSceneIntro::Update()
 
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	if (bodyB == tunnel_start_sensor || bodyB == tunnel_end_sensor)
+	if (bodyB == tunnel_beginning || bodyB == tunnel_finish)
 	{
 		on_tunnel = !on_tunnel;
 		if (on_canon)
 			on_canon = false;
 	}
 
-	else if (bodyB == tunnel2_left_sensor || bodyB == tunnel2_right_sensor)
+	else if (bodyB == left_tunnel2 || bodyB == right_tunnel2)
 		on_top = !on_top;
 
-	else if (bodyB == monster_hit_sensor)
+	else if (bodyB == monster_hit)
 	{
-		boss_hited = true;
-		if (!win)App->player->score += 1000;
-		App->audio->PlayFx(explosion);
+		boss_hit = true;
+		if (!won)App->player->score += 1000;
+		App->audio->PlayFx(fx_explosion);
 	}
 
 	else if (bodyB == right_hole)
 	{
 		color_circles++;
-		if (!win) App->player->score += 3000;
+		if (!won) App->player->score += 3000;
 		middle_hole_hit = 0;
 	}
 
 	else if (bodyB == deadline)
 	{
-		if (!win)
+		if (!won)
 		{
 			if (App->player->number_balls == 0)
 			{
-				gameover = true;
-				App->audio->PlayFx(lose);
+				lost = true;
+				App->audio->PlayFx(fx_gameover);
 			}
 			want_to_delete = true;
 			on_launcher = true;
@@ -480,38 +480,38 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		}
 	}
 
-	else if (bodyB == up_hole_sensor && up_hole_hit < 3) {
+	else if (bodyB == up_hole && up_hole_hit < 3) {
 		up_hole_hit++;
-		if (!win)App->player->score += 250;
+		if (!won)App->player->score += 250;
 
 		if (up_hole_hit == 3) {
-			if (!win)App->player->score += 1000;
+			if (!won)App->player->score += 1000;
 		}
 	}
 
-	else if (bodyB == paddle_left_bdy)
+	else if (bodyB == left_flopper_body)
 	{
-		App->audio->PlayFx(paddle_fx);
+		App->audio->PlayFx(fx_flopper);
 	}
 
-	else if (bodyB == paddle_right_bdy)
+	else if (bodyB == right_flopper_body)
 	{
-		App->audio->PlayFx(paddle_fx);
+		App->audio->PlayFx(fx_flopper);
 	}
 
-	else if (bodyB == chip_loop_sensor && chip_lights_on < 4)
+	else if (bodyB == chip_loop && chip_lights_on < 4)
 	{
 		chip_lights_on++;
-		if (!win)App->player->score += 500;
+		if (!won)App->player->score += 500;
 
-		App->audio->PlayFx(chip_sound);
+		App->audio->PlayFx(fx_chiploop);
 
 		if (chip_lights_on == 4) {
-			if (!win) App->player->score += 2000;
+			if (!won) App->player->score += 2000;
 		}
 	}
 
-	else if (bodyB == mid_sensor && middle_hole_hit < 3 && color_circles < 4)
+	else if (bodyB == midpoint && middle_hole_hit < 3 && color_circles < 4)
 	{
 		mid_hit = true;
 		middle_hole_hit++;
@@ -521,21 +521,21 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	else if (bodyB == ball_saver_left || bodyB == ball_saver_right)
 	{
 		bodyA->body->SetLinearVelocity(b2Vec2(0, -10));
-		App->audio->PlayFx(saver_hit);
+		App->audio->PlayFx(fx_saverhit);
 	}
 
 
-	else if ((bodyB == left_flopper || bodyB == right_kicker) && chip_lights_on == 4) {
+	else if ((bodyB == left_flopper || bodyB == right_flopper2) && chip_lights_on == 4) {
 		chip_lights_on = 0;
 	}
-	else if ((bodyB == left_flopper || bodyB == right_kicker) && up_hole_hit == 3) {
+	else if ((bodyB == left_flopper || bodyB == right_flopper2) && up_hole_hit == 3) {
 		up_hole_hit = 0;
 	}
 
-	else if (bodyB == canon_sensor)
+	else if (bodyB == cannon_sensor)
 	{
 		ball->body->SetLinearVelocity(b2Vec2(-13, -15));
-		App->audio->PlayFx(canon_sound);
+		App->audio->PlayFx(fx_cannon);
 		on_canon = true;
 		on_launcher = false;
 	}
@@ -1132,7 +1132,7 @@ void ModuleSceneIntro::Create_Kickers()
 		48, 2
 	};
 
-	int right_kicker_vertices[8] = {
+	int right_flopper2_vertices[8] = {
 		0, 7,
 		0, -7,
 		-48, -2,
@@ -1146,7 +1146,7 @@ void ModuleSceneIntro::Create_Kickers()
 		48, 2
 	};
 
-	int right_kicker_vertices2[8] = {
+	int right_flopper2_vertices2[8] = {
 		0, 7,
 		0, -7,
 		-48, -2,
@@ -1157,17 +1157,17 @@ void ModuleSceneIntro::Create_Kickers()
 	PhysBody* B = App->physics->CreateCircle(180, 768, 7, "static", 0x0001, 0x0004);
 	rev_joint_left = App->physics->CreateRevoluteJoint(left_flopper, B, 0, 0, -5, -15, 15);
 
-	right_kicker = App->physics->CreatePolygon(305, 768, right_kicker_vertices, 8, 1.0f, 0x0001, 0x0004);
+	right_flopper2 = App->physics->CreatePolygon(305, 768, right_flopper2_vertices, 8, 1.0f, 0x0001, 0x0004);
 	PhysBody* B2 = App->physics->CreateCircle(305, 768, 7, "static", 0x0001, 0x0004);
-	rev_joint_right = App->physics->CreateRevoluteJoint(right_kicker, B2, 0, 0, -180, 165, 200);
+	rev_joint_right = App->physics->CreateRevoluteJoint(right_flopper2, B2, 0, 0, -180, 165, 200);
 
 	left_flopper2 = App->physics->CreatePolygon(69, 367, left_flopper_vertices2, 8, 1.0f, 0x0001, 0x0004);
 	PhysBody* B3 = App->physics->CreateCircle(69, 367, 7, "static", 0x0001, 0x0004);
 	rev_joint_left2 = App->physics->CreateRevoluteJoint(left_flopper2, B3, 0, 0, -10, -55, -25);
 
-	right_kicker2 = App->physics->CreatePolygon(450, 510, right_kicker_vertices2, 8, 1.0f, 0x0001, 0x0004);
+	right_flopper2 = App->physics->CreatePolygon(450, 510, right_flopper2_vertices2, 8, 1.0f, 0x0001, 0x0004);
 	PhysBody* B4 = App->physics->CreateCircle(450, 510, 7, "static", 0x0001, 0x0004);
-	rev_joint_right2 = App->physics->CreateRevoluteJoint(right_kicker2, B4, 0, 0, -180, 225, 255);
+	rev_joint_right2 = App->physics->CreateRevoluteJoint(right_flopper2, B4, 0, 0, -180, 225, 255);
 }
 
 void ModuleSceneIntro::Draw_Kickers()
@@ -1178,7 +1178,7 @@ void ModuleSceneIntro::Draw_Kickers()
 	section1.h = 21;
 	section1.w = 62;
 
-	App->renderer->Blit(sprites, 255, 760, &section1, 1.0f, (-rev_joint_right->GetJointAngle() * RADTODEG) + 180, 50, 15);
+	App->renderer->Blit(spritesheet, 255, 760, &section1, 1.0f, (-rev_joint_right->GetJointAngle() * RADTODEG) + 180, 50, 15);
 
 	SDL_Rect section2;
 	section2.x = 95;
@@ -1186,7 +1186,7 @@ void ModuleSceneIntro::Draw_Kickers()
 	section2.h = 21;
 	section2.w = 62;
 
-	App->renderer->Blit(sprites, 168, 760, &section2, 1.0f, (-rev_joint_left->GetJointAngle() * RADTODEG), 10, 15);
+	App->renderer->Blit(spritesheet, 168, 760, &section2, 1.0f, (-rev_joint_left->GetJointAngle() * RADTODEG), 10, 15);
 
 	SDL_Rect section3;
 	section3.x = 68;
@@ -1194,7 +1194,7 @@ void ModuleSceneIntro::Draw_Kickers()
 	section3.h = 21;
 	section3.w = 62;
 
-	App->renderer->Blit(sprites, 400, 505, &section3, 1.0f, (-rev_joint_right2->GetJointAngle() * RADTODEG) + 185, 50, 10);
+	App->renderer->Blit(spritesheet, 400, 505, &section3, 1.0f, (-rev_joint_right2->GetJointAngle() * RADTODEG) + 185, 50, 10);
 
 	SDL_Rect section4;
 	section4.x = 95;
@@ -1202,20 +1202,20 @@ void ModuleSceneIntro::Draw_Kickers()
 	section4.h = 21;
 	section4.w = 62;
 
-	App->renderer->Blit(sprites, 55, 362, &section4, 1.0f, (-rev_joint_left2->GetJointAngle() * RADTODEG) + 5, 10, 10);
+	App->renderer->Blit(spritesheet, 55, 362, &section4, 1.0f, (-rev_joint_left2->GetJointAngle() * RADTODEG) + 5, 10, 10);
 }
 
 void ModuleSceneIntro::Check_Area()
 {
 	if (!on_tunnel)
-		tunnel_end_sensor->body->SetActive(false);
+		tunnel_finish->body->SetActive(false);
 	else
-		tunnel_end_sensor->body->SetActive(true);
+		tunnel_finish->body->SetActive(true);
 
 	if (on_tunnel)
 	{
 		p2List_item<PhysBody*>* items = limits_background.getFirst();
-		tunnel2_left_sensor->body->SetActive(false);
+		left_tunnel2->body->SetActive(false);
 		tunnel->body->SetActive(true);
 		tunnel_2_1->body->SetActive(false);
 		tunnel_2_2->body->SetActive(false);
@@ -1258,7 +1258,7 @@ void ModuleSceneIntro::Check_Area()
 	else
 	{
 		p2List_item<PhysBody*>* items = limits_background.getFirst();
-		tunnel2_left_sensor->body->SetActive(true);
+		left_tunnel2->body->SetActive(true);
 		tunnel->body->SetActive(false);
 		tunnel_2_1->body->SetActive(false);
 		tunnel_2_2->body->SetActive(false);
@@ -1289,7 +1289,7 @@ void ModuleSceneIntro::Draw_Lights()
 			r.w = 18;
 			r.h = 18;
 
-			App->renderer->Blit(sprites, 272, 281, &r);
+			App->renderer->Blit(spritesheet, 272, 281, &r);
 			break;
 		}
 		case 2:
@@ -1301,7 +1301,7 @@ void ModuleSceneIntro::Draw_Lights()
 			r.w = 18;
 			r.h = 18;
 
-			App->renderer->Blit(sprites, 298, 288, &r);
+			App->renderer->Blit(spritesheet, 298, 288, &r);
 			break;
 		}
 
@@ -1314,7 +1314,7 @@ void ModuleSceneIntro::Draw_Lights()
 			r.w = 18;
 			r.h = 18;
 
-			App->renderer->Blit(sprites, 324, 281, &r);
+			App->renderer->Blit(spritesheet, 324, 281, &r);
 			break;
 		}
 		}
@@ -1333,7 +1333,7 @@ void ModuleSceneIntro::Draw_Lights()
 			r.w = 32;
 			r.h = 32;
 
-			App->renderer->Blit(sprites, 30, 211, &r);
+			App->renderer->Blit(spritesheet, 30, 211, &r);
 			break;
 		}
 		case 2:
@@ -1345,7 +1345,7 @@ void ModuleSceneIntro::Draw_Lights()
 			r.w = 32;
 			r.h = 32;
 
-			App->renderer->Blit(sprites, 36, 247, &r);
+			App->renderer->Blit(spritesheet, 36, 247, &r);
 			break;
 		}
 
@@ -1358,7 +1358,7 @@ void ModuleSceneIntro::Draw_Lights()
 			r.w = 32;
 			r.h = 32;
 
-			App->renderer->Blit(sprites, 48, 281, &r);
+			App->renderer->Blit(spritesheet, 48, 281, &r);
 			break;
 		}
 
@@ -1371,7 +1371,7 @@ void ModuleSceneIntro::Draw_Lights()
 			r.w = 32;
 			r.h = 32;
 
-			App->renderer->Blit(sprites, 62, 313, &r);
+			App->renderer->Blit(spritesheet, 62, 313, &r);
 			break;
 		}
 		}
@@ -1390,7 +1390,7 @@ void ModuleSceneIntro::Draw_Lights()
 			r.w = 37;
 			r.h = 37;
 
-			App->renderer->Blit(sprites, 189, 452, &r);
+			App->renderer->Blit(spritesheet, 189, 452, &r);
 			break;
 		}
 		case 2:
@@ -1402,7 +1402,7 @@ void ModuleSceneIntro::Draw_Lights()
 			r.w = 37;
 			r.h = 37;
 
-			App->renderer->Blit(sprites, 225, 461, &r);
+			App->renderer->Blit(spritesheet, 225, 461, &r);
 			break;
 		}
 		case 3:
@@ -1414,7 +1414,7 @@ void ModuleSceneIntro::Draw_Lights()
 			r.w = 37;
 			r.h = 37;
 
-			App->renderer->Blit(sprites, 258, 452, &r);
+			App->renderer->Blit(spritesheet, 258, 452, &r);
 			break;
 		}
 		}
@@ -1433,7 +1433,7 @@ void ModuleSceneIntro::Draw_Lights()
 			r.w = 30;
 			r.h = 30;
 
-			App->renderer->Blit(sprites, 227, 683, &r);
+			App->renderer->Blit(spritesheet, 227, 683, &r);
 			break;
 		}
 		case 1:
@@ -1445,7 +1445,7 @@ void ModuleSceneIntro::Draw_Lights()
 			r.w = 28;
 			r.h = 30;
 
-			App->renderer->Blit(sprites, 255, 672, &r);
+			App->renderer->Blit(spritesheet, 255, 672, &r);
 			break;
 		}
 		case 2:
@@ -1457,7 +1457,7 @@ void ModuleSceneIntro::Draw_Lights()
 			r.w = 30;
 			r.h = 30;
 
-			App->renderer->Blit(sprites, 244, 641, &r);
+			App->renderer->Blit(spritesheet, 244, 641, &r);
 			break;
 		}
 		case 3:
@@ -1469,7 +1469,7 @@ void ModuleSceneIntro::Draw_Lights()
 			r.w = 30;
 			r.h = 30;
 
-			App->renderer->Blit(sprites, 211, 642, &r);
+			App->renderer->Blit(spritesheet, 211, 642, &r);
 			break;
 		}
 		case 4:
@@ -1481,24 +1481,24 @@ void ModuleSceneIntro::Draw_Lights()
 			r.w = 30;
 			r.h = 30;
 
-			App->renderer->Blit(sprites, 198, 672, &r);
+			App->renderer->Blit(spritesheet, 198, 672, &r);
 			break;
 		}
 		}
 	}
 
 
-	//Drawing arrows permanently on
-	App->renderer->Blit(sprites, 58, 429, &arrow_tunel2_left.GetCurrentFrame());
-	App->renderer->Blit(sprites, 412, 429, &arrow_tunel2_right.GetCurrentFrame());
-	App->renderer->Blit(sprites, 191, 228, &blue_arrow_top.GetCurrentFrame());
-	App->renderer->Blit(sprites, 379, 211, &monster_arrow.GetCurrentFrame());
-	App->renderer->Blit(sprites, 69, 480, &map_arrows.GetCurrentFrame());
-	App->renderer->Blit(sprites, 377, 236, &yellow_arrows.GetCurrentFrame());
+	//Drawong arrows permanently on
+	App->renderer->Blit(spritesheet, 58, 429, &arrow_tunel2_left.GetCurrentFrame());
+	App->renderer->Blit(spritesheet, 412, 429, &arrow_tunel2_right.GetCurrentFrame());
+	App->renderer->Blit(spritesheet, 191, 228, &blue_arrow_top.GetCurrentFrame());
+	App->renderer->Blit(spritesheet, 379, 211, &monster_arrow.GetCurrentFrame());
+	App->renderer->Blit(spritesheet, 69, 480, &map_arrows.GetCurrentFrame());
+	App->renderer->Blit(spritesheet, 377, 236, &yellow_arrows.GetCurrentFrame());
 
-	//Drawing different down lights
-	App->renderer->Blit(sprites, 40, 608, &down_lights.GetCurrentFrame());
-	App->renderer->Blit(sprites, 88, 614, &down_lights.GetCurrentFrame());
-	App->renderer->Blit(sprites, 375, 614, &down_lights.GetCurrentFrame());
-	App->renderer->Blit(sprites, 423, 608, &down_lights.GetCurrentFrame());
+	//Drawong different down lights
+	App->renderer->Blit(spritesheet, 40, 608, &down_lights.GetCurrentFrame());
+	App->renderer->Blit(spritesheet, 88, 614, &down_lights.GetCurrentFrame());
+	App->renderer->Blit(spritesheet, 375, 614, &down_lights.GetCurrentFrame());
+	App->renderer->Blit(spritesheet, 423, 608, &down_lights.GetCurrentFrame());
 }

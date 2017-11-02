@@ -48,7 +48,7 @@ public:
 	PhysBody* midpoint;
 	PhysBody* up_hole;
 	PhysBody* launcher;
-	PhysBody* cannon_senson;
+	PhysBody* cannon_sensor;
 	PhysBody* chip_loop;
 	PhysBody* ball_saver_right;
 	PhysBody* ball_saver_left;
@@ -73,8 +73,8 @@ public:
 	Animation cannon;
 	Animation raptor;
 	Animation raptor_hit;
-	Animation left_flopper;
-	Animation right_flopper;
+	Animation left_floppers;
+	Animation right_floppers;
 	Animation arrow_tunel2_left;
 	Animation arrow_tunel2_right;
 	Animation white_mid;
