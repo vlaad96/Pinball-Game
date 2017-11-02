@@ -1123,6 +1123,8 @@ void ModuleSceneIntro::Create_Limits()
 	limits_background.add(App->physics->CreateChain(0, 0, bridge2, 18, "static", 0x0001, 0x0004));
 }
 
+void CreatePolygon(int x, int y, int* points, int size, float density, uint16 category, uint16 mask);
+
 void ModuleSceneIntro::Create_Kickers()
 {
 	int left_flopper_vertices[8] = {
