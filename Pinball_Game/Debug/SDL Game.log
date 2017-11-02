@@ -1,1 +1,28 @@
-﻿LINK : fatal error LNK1104: cannot open file 'SDL/libx86/SDL2.lib'
+﻿  ModuleWindow.cpp
+  ModuleTextures.cpp
+  ModuleSceneIntro.cpp
+c:\users\vlad\documents\github\pinball-game\pinball_game\animation.h(44): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\vlad\documents\github\pinball-game\pinball_game\modulesceneintro.cpp(349): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\vlad\documents\github\pinball-game\pinball_game\modulesceneintro.cpp(351): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\vlad\documents\github\pinball-game\pinball_game\modulesceneintro.cpp(353): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\vlad\documents\github\pinball-game\pinball_game\modulesceneintro.cpp(356): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\limits(210): warning C4577: 'noexcept' used with no exception handling mode specified; termination on exception is not guaranteed. Specify /EHsc
+  ModuleRender.cpp
+  ModulePlayer.cpp
+  ModulePhysics.cpp
+c:\users\vlad\documents\github\pinball-game\pinball_game\modulephysics.cpp(117): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\vlad\documents\github\pinball-game\pinball_game\modulephysics.cpp(118): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\vlad\documents\github\pinball-game\pinball_game\modulephysics.cpp(161): warning C4018: '<': signed/unsigned mismatch
+c:\users\vlad\documents\github\pinball-game\pinball_game\modulephysics.cpp(352): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\vlad\documents\github\pinball-game\pinball_game\modulephysics.cpp(353): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\vlad\documents\github\pinball-game\pinball_game\modulephysics.cpp(359): warning C4244: 'return': conversion from 'float32' to 'int', possible loss of data
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(131): warning C4577: 'noexcept' used with no exception handling mode specified; termination on exception is not guaranteed. Specify /EHsc
+  ModuleInput.cpp
+  ModuleAudio.cpp
+  Main.cpp
+  log.cpp
+  Application.cpp
+c:\users\vlad\documents\github\pinball-game\pinball_game\animation.h(44): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\limits(210): warning C4577: 'noexcept' used with no exception handling mode specified; termination on exception is not guaranteed. Specify /EHsc
+  Generating Code...
+LINK : fatal error LNK1104: cannot open file 'SDL/libx86/SDL2.lib'
